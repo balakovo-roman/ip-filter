@@ -59,7 +59,8 @@
             ],
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release",
-                "CMAKE_CXX_FLAGS_RELEASE": "-O3 -DNDEBUG"
+                "CMAKE_CXX_FLAGS_RELEASE": "-O3 -DNDEBUG",
+                "PROJECT_VERSION_PATCH": "1"
             }
         },
         {
@@ -71,7 +72,8 @@
             ],
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug",
-                "CMAKE_CXX_FLAGS_DEBUG": "-g3 -fno-omit-frame-pointer -fno-inline -O0"
+                "CMAKE_CXX_FLAGS_DEBUG": "-g3 -fno-omit-frame-pointer -fno-inline -O0",
+                "PROJECT_VERSION_PATCH": "1"
             }
         }
     ],
