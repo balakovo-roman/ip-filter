@@ -1,0 +1,4 @@
+.clangd
+.history
+build/
+CMakeUserPresets.json

@@ -1,0 +1,5 @@
+function(install_binary binary_name)
+    if(NOT CMAKE_SKIP_INSTALL_RULES)
+        install(TARGETS ${binary_name} RUNTIME DESTINATION bin)
+    endif()
+endfunction()

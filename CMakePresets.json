@@ -1,0 +1,108 @@
+{
+    "version": 8,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 28,
+        "patch": 0
+    },
+    "configurePresets": [
+        {
+            "name": "cmake-pedantic",
+            "hidden": true,
+            "warnings": {
+                "dev": true,
+                "deprecated": true,
+                "uninitialized": true,
+                "unusedCli": true,
+                "systemVars": false
+            },
+            "errors": {
+                "dev": true,
+                "deprecated": true
+            }
+        },
+        {
+            "name": "cpp",
+            "inherits": [
+                "cmake-pedantic"
+            ],
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_CXX_FLAGS": "-Wall -Wextra -Werror -Wsign-conversion -Wimplicit-fallthrough=5",
+                "CMAKE_CXX_STANDARD": "17",
+                "CMAKE_CXX_STANDARD_REQUIRED": "ON",
+                "CMAKE_CXX_EXTENSIONS": "OFF"
+            }
+        },
+        {
+            "name": "build",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "generator": "Ninja",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_MAKE_PROGRAM": "ninja"
+            }
+        },
+        {
+            "name": "gcc",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_CXX_COMPILER": "/usr/bin/g++"
+            }
+        },
+        {
+            "name": "release",
+            "inherits": [
+                "cpp",
+                "build",
+                "gcc"
+            ],
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_CXX_FLAGS_RELEASE": "-O3 -DNDEBUG"
+            }
+        },
+        {
+            "name": "debug",
+            "inherits": [
+                "cpp",
+                "build",
+                "gcc"
+            ],
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_CXX_FLAGS_DEBUG": "-g3 -fno-omit-frame-pointer -fno-inline -O0"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "release",
+            "configurePreset": "release"
+        },
+        {
+            "name": "debug",
+            "configurePreset": "debug"
+        }
+    ],
+    "testPresets": [
+        {
+            "name": "default",
+            "hidden": true,
+            "output": {
+                "outputOnFailure": true
+            },
+            "execution": {
+                "noTestsAction": "error",
+                "stopOnFailure": true
+            }
+        },
+        {
+            "name": "release",
+            "configurePreset": "release",
+            "inherits": [
+                "default"
+            ]
+        }
+    ]
+}
