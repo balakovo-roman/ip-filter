@@ -106,5 +106,21 @@
                 "default"
             ]
         }
+    ],
+    "packagePresets": [
+        {
+            "name": "release",
+            "configurePreset": "release",
+            "generators": [
+                "DEB"
+            ],
+            "configurations": [
+                "Release"
+            ],
+            "variables": {
+                "CPACK_DEBIAN_PACKAGE_MAINTAINER": "Lebedev Roman qwerty@gmail.ru",
+                "CPACK_DEBIAN_PACKAGE_DESCRIPTION": "A simple Hello World package"
+            }
+        }
     ]
 }
