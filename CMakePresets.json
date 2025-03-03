@@ -28,7 +28,7 @@
             ],
             "hidden": true,
             "cacheVariables": {
-                "CMAKE_CXX_FLAGS": "-Wall -Wextra -Werror -Wsign-conversion -Wimplicit-fallthrough=5",
+                "CMAKE_CXX_FLAGS": "-Wall -Wextra -Werror -Wsign-conversion -Warray-bounds -Wimplicit-fallthrough=5",
                 "CMAKE_CXX_STANDARD": "17",
                 "CMAKE_CXX_STANDARD_REQUIRED": "ON",
                 "CMAKE_CXX_EXTENSIONS": "OFF"
@@ -64,6 +64,15 @@
             }
         },
         {
+            "name": "ci-sanitize",
+            "inherits": [
+                "release"
+            ],
+            "cacheVariables": {
+                "CMAKE_CXX_FLAGS_RELEASE": "-O2 -g -DNDEBUG -fsanitize=address,undefined -fno-omit-frame-pointer"
+            }
+        },
+        {
             "name": "debug",
             "inherits": [
                 "cpp",
@@ -81,6 +90,10 @@
         {
             "name": "release",
             "configurePreset": "release"
+        },
+        {
+            "name": "ci-sanitize",
+            "configurePreset": "ci-sanitize"
         },
         {
             "name": "debug",
@@ -102,6 +115,13 @@
         {
             "name": "release",
             "configurePreset": "release",
+            "inherits": [
+                "default"
+            ]
+        },
+        {
+            "name": "ci-sanitize",
+            "configurePreset": "ci-sanitize",
             "inherits": [
                 "default"
             ]

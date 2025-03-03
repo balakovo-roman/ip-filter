@@ -20,13 +20,13 @@ jobs:
         sudo apt-get install -y cmake ninja-build g++
 
     - name: Configure CMake
-      run: cmake --preset=release -DPROJECT_VERSION_PATCH=${{ github.run_number }}
+      run: cmake --preset=ci-sanitize -DPROJECT_VERSION_PATCH=${{ github.run_number }}
 
     - name: Build
-      run: cmake --build --preset=release
+      run: cmake --build --preset=ci-sanitize
 
     - name: Test
-      run: ctest --preset=release
+      run: ctest --preset=ci-sanitize
 
   release:
     runs-on: ubuntu-latest
