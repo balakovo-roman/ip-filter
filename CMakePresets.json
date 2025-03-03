@@ -64,12 +64,21 @@
             }
         },
         {
-            "name": "ci-sanitize",
+            "name": "ci-asan",
             "inherits": [
                 "release"
             ],
             "cacheVariables": {
                 "CMAKE_CXX_FLAGS_RELEASE": "-O2 -g -DNDEBUG -fsanitize=address,undefined -fno-omit-frame-pointer"
+            }
+        },
+        {
+            "name": "ci-tsan",
+            "inherits": [
+                "release"
+            ],
+            "cacheVariables": {
+                "CMAKE_CXX_FLAGS_RELEASE": "-Og -g -DNDEBUG -fsanitize=thread -fno-omit-frame-pointer"
             }
         },
         {
@@ -92,8 +101,12 @@
             "configurePreset": "release"
         },
         {
-            "name": "ci-sanitize",
-            "configurePreset": "ci-sanitize"
+            "name": "ci-asan",
+            "configurePreset": "ci-asan"
+        },
+        {
+            "name": "ci-tsan",
+            "configurePreset": "ci-tsan"
         },
         {
             "name": "debug",
@@ -120,8 +133,15 @@
             ]
         },
         {
-            "name": "ci-sanitize",
-            "configurePreset": "ci-sanitize",
+            "name": "ci-asan",
+            "configurePreset": "ci-asan",
+            "inherits": [
+                "default"
+            ]
+        },
+        {
+            "name": "ci-tsan",
+            "configurePreset": "ci-tsan",
             "inherits": [
                 "default"
             ]
