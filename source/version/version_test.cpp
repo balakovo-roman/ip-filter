@@ -1,9 +1,10 @@
-#include <gtest/gtest.h>
-#include <gmock/gmock-matchers.h>
-
 #include "version.hpp"
 
-namespace  {
+#include <gmock/gmock-matchers.h>
+#include <gtest/gtest.h>
+
+namespace
+{
 
 TEST(VersionTest, ProjectPatchVersionShouldGreaterNullWhenRequired)
 {
@@ -14,4 +15,4 @@ TEST(VersionTest, ProjectPatchVersionShouldGreaterNullWhenRequired)
     EXPECT_THAT(patch_version, testing::Gt(0U));
 }
 
-}
+}  // namespace

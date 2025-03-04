@@ -1,12 +1,10 @@
 #include "version.hpp"
 
-#include "config.h"
+#include "config.hpp"
 
-namespace version {
-
-uint32_t GetProjPatchVersion() noexcept
+namespace version
 {
-    return PROJECT_VERSION_PATCH;
-}
 
-}
+uint32_t GetProjPatchVersion() noexcept { return PROJECT_VERSION_PATCH; }
+
+}  // namespace version

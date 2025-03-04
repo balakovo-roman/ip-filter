@@ -2,7 +2,8 @@
 
 #include <cstdint>
 
-namespace version {
+namespace version
+{
 
 uint32_t GetProjPatchVersion() noexcept;
 
