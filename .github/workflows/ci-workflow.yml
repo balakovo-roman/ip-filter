@@ -6,10 +6,31 @@ on:
       - "main"
     tags:
       - "release-*"
+  pull_request:
+    branches:
+      - "main"
 
 jobs:
+  check-format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install clang-format
+        run: sudo apt-get install -y clang-format
+
+      - name: Check code formatting
+        run: |
+          if ! find source -name '*.cpp' -o -name '*.h' | xargs clang-format --dry-run --Werror; then
+            echo "::error::Code formatting issues were found. Please run 'clang-format' to fix them."
+            exit 1
+          else
+            echo "Code is properly formatted."
+          fi
+
   test-sanitizers:
     runs-on: ubuntu-latest
+    needs: check-format
     strategy:
       matrix:
         preset: [ci-asan, ci-tsan]
@@ -32,7 +53,7 @@ jobs:
 
   build-clang-tidy:
     runs-on: ubuntu-latest
-
+    needs: check-format
     steps:
     - uses: actions/checkout@v4
 
@@ -49,7 +70,7 @@ jobs:
 
   build-coverage-report:
     runs-on: ubuntu-latest
-
+    needs: check-format
     steps:
       - uses: actions/checkout@v4
 
