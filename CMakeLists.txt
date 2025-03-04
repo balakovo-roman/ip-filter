@@ -7,6 +7,9 @@ project("helloworld"
 # ---- Testing ----
 include(cmake/testing.cmake)
 
+# ---- Coverage ----
+include(cmake/coverage.cmake)
+
 # ---- Install rules ----
 include(cmake/install-rules.cmake)
 

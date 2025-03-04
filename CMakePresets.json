@@ -103,6 +103,16 @@
                 "CMAKE_CXX_FLAGS_DEBUG": "-g3 -fno-omit-frame-pointer -fno-inline -O0",
                 "PROJECT_VERSION_PATCH": "1"
             }
+        },
+        {
+            "name": "coverage",
+            "inherits": [
+                "debug"
+            ],
+            "cacheVariables": {
+                "ENABLE_COVERAGE": "ON",
+                "CMAKE_CXX_FLAGS_DEBUG": "-g3 -fno-inline -O0 --coverage"
+            }
         }
     ],
     "buildPresets": [
@@ -125,6 +135,10 @@
         {
             "name": "debug",
             "configurePreset": "debug"
+        },
+        {
+            "name": "coverage",
+            "configurePreset": "coverage"
         }
     ],
     "testPresets": [
