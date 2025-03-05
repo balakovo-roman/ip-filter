@@ -33,3 +33,16 @@ function(make_main_test testname sources libraries)
 
     add_test(NAME ${TEST_NAME} COMMAND ${TEST_NAME} WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
 endfunction()
+
+add_custom_target(valgrind_tests
+    COMMAND valgrind
+    --leak-check=full
+    --show-leak-kinds=all
+    --track-origins=yes
+    --error-exitcode=1
+    --verbose
+    ${CMAKE_CTEST_COMMAND}
+    --output-on-failure
+    DEPENDS ${CMAKE_CTEST_COMMAND}
+    COMMENT "Running tests under Valgrind"
+)

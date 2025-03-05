@@ -142,6 +142,11 @@
             "name": "generate-report",
             "configurePreset": "coverage",
             "targets": "coverage"
+        },
+        {
+            "name": "valgrind_tests",
+            "configurePreset": "debug",
+            "targets": "valgrind_tests"
         }
     ],
     "testPresets": [
@@ -273,6 +278,23 @@
                 {
                     "type": "build",
                     "name": "generate-report"
+                }
+            ]
+        },
+        {
+            "name": "valgrind_tests",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "debug"
+                },
+                {
+                    "type": "build",
+                    "name": "debug"
+                },
+                {
+                    "type": "build",
+                    "name": "valgrind_tests"
                 }
             ]
         }
