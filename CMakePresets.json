@@ -59,8 +59,7 @@
             ],
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release",
-                "CMAKE_CXX_FLAGS_RELEASE": "-O3 -DNDEBUG",
-                "PROJECT_VERSION_PATCH": "1"
+                "CMAKE_CXX_FLAGS_RELEASE": "-O3 -DNDEBUG"
             }
         },
         {
@@ -100,8 +99,7 @@
             ],
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug",
-                "CMAKE_CXX_FLAGS_DEBUG": "-g3 -fno-omit-frame-pointer -fno-inline -O0",
-                "PROJECT_VERSION_PATCH": "1"
+                "CMAKE_CXX_FLAGS_DEBUG": "-g3 -fno-omit-frame-pointer -fno-inline -O0"
             }
         },
         {
@@ -139,6 +137,11 @@
         {
             "name": "coverage",
             "configurePreset": "coverage"
+        },
+        {
+            "name": "generate-report",
+            "configurePreset": "coverage",
+            "targets": "coverage"
         }
     ],
     "testPresets": [
@@ -189,6 +192,89 @@
                 "CPACK_DEBIAN_PACKAGE_MAINTAINER": "Lebedev Roman qwerty@gmail.ru",
                 "CPACK_DEBIAN_PACKAGE_DESCRIPTION": "A simple Hello World package"
             }
+        }
+    ],
+    "workflowPresets": [
+        {
+            "name": "release",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "release"
+                },
+                {
+                    "type": "build",
+                    "name": "release"
+                },
+                {
+                    "type": "package",
+                    "name": "release"
+                }
+            ]
+        },
+        {
+            "name": "ci-asan",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "ci-asan"
+                },
+                {
+                    "type": "build",
+                    "name": "ci-asan"
+                },
+                {
+                    "type": "test",
+                    "name": "ci-asan"
+                }
+            ]
+        },
+        {
+            "name": "ci-tsan",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "ci-tsan"
+                },
+                {
+                    "type": "build",
+                    "name": "ci-tsan"
+                },
+                {
+                    "type": "test",
+                    "name": "ci-tsan"
+                }
+            ]
+        },
+        {
+            "name": "ci-clang-tidy",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "ci-clang-tidy"
+                },
+                {
+                    "type": "build",
+                    "name": "ci-clang-tidy"
+                }
+            ]
+        },
+        {
+            "name": "coverage",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "coverage"
+                },
+                {
+                    "type": "build",
+                    "name": "coverage"
+                },
+                {
+                    "type": "build",
+                    "name": "generate-report"
+                }
+            ]
         }
     ]
 }

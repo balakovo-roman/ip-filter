@@ -1,8 +1,16 @@
 cmake_minimum_required(VERSION 3.28)
 
+if(DEFINED ENV{PROJECT_VERSION_PATCH})
+    set(PROJECT_VERSION_PATCH $ENV{PROJECT_VERSION_PATCH})
+else()
+    set(PROJECT_VERSION_PATCH 1)
+endif()
+
 project("helloworld"
     VERSION 0.0.${PROJECT_VERSION_PATCH}
     LANGUAGES CXX)
+
+message("Project version: " ${PROJECT_VERSION})
 
 # ---- Testing ----
 include(cmake/testing.cmake)

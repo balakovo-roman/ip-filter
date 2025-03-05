@@ -10,6 +10,9 @@ on:
     branches:
       - "main"
 
+env:
+  PROJECT_VERSION_PATCH: ${{ github.run_number }}
+
 jobs:
   check-format:
     runs-on: ubuntu-latest
@@ -42,14 +45,8 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y cmake ninja-build g++
 
-      - name: Configure CMake
-        run: cmake --preset ${{ matrix.preset }} -DPROJECT_VERSION_PATCH=${{ github.run_number }}
-
-      - name: Build
-        run: cmake --build --preset ${{ matrix.preset }}
-
-      - name: Test
-        run: ctest --preset ${{ matrix.preset }}
+      - name: Sanitizer workflow
+        run: cmake --workflow --preset ${{ matrix.preset }}
 
   build-clang-tidy:
     runs-on: ubuntu-latest
@@ -62,11 +59,8 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y cmake ninja-build g++
 
-    - name: Configure CMake
-      run: cmake --preset=ci-clang-tidy -DPROJECT_VERSION_PATCH=${{ github.run_number }}
-
-    - name: Build
-      run: cmake --build --preset=ci-clang-tidy
+    - name: Clang-tidy workflow
+      run: cmake --workflow --preset ci-clang-tidy
 
   build-coverage-report:
     runs-on: ubuntu-latest
@@ -79,14 +73,8 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y cmake ninja-build g++ gcovr
 
-      - name: Configure CMake (Coverage)
-        run: cmake --preset=coverage -DPROJECT_VERSION_PATCH=${{ github.run_number }}
-
-      - name: Build (Coverage)
-        run: cmake --build --preset=coverage
-
-      - name: Run tests and generate coverage report
-        run: cmake --build --preset=coverage --target coverage
+      - name: Coverage workflow
+        run: cmake --workflow --preset coverage
 
       - name: Upload coverage report as artifact
         uses: actions/upload-artifact@v4
@@ -107,14 +95,8 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y cmake ninja-build g++
 
-    - name: Configure CMake
-      run: cmake --preset=release -DPROJECT_VERSION_PATCH=${{ github.run_number }}
-
-    - name: Build
-      run: cmake --build --preset=release
-
-    - name: Create DEB package
-      run: cpack --preset release
+    - name: Release workflow
+      run: cmake --workflow --preset release
 
     - name: Create GitHub Release
       id: create_release
@@ -133,6 +115,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: build/release/helloworld-0.0.${{ github.run_number }}-Linux.deb
-        asset_name: helloworld-0.0.${{ github.run_number }}-Linux.deb
+        asset_path: build/release/helloworld-0.0.$PROJECT_VERSION_PATCH-Linux.deb
+        asset_name: helloworld-0.0.$PROJECT_VERSION_PATCH-Linux.deb
         asset_content_type: application/vnd.debian.binary-package
