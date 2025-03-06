@@ -10,8 +10,6 @@ project("helloworld"
     VERSION 0.0.${PROJECT_VERSION_PATCH}
     LANGUAGES CXX)
 
-message("Project version: " ${PROJECT_VERSION})
-
 # ---- Testing ----
 include(cmake/testing.cmake)
 
