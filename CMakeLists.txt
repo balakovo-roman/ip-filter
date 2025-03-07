@@ -6,7 +6,7 @@ else()
     set(PROJECT_VERSION_PATCH 1)
 endif()
 
-project("helloworld"
+project("ip_filter"
     VERSION 0.0.${PROJECT_VERSION_PATCH}
     LANGUAGES CXX)
 
