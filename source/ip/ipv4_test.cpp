@@ -2,6 +2,7 @@
 
 #include <gtest/gtest.h>
 
+#include <optional>
 #include <sstream>
 #include <string_view>
 
@@ -36,7 +37,7 @@ INSTANTIATE_TEST_SUITE_P(
                       std::make_tuple(IPv4(255, 255, 255, 255),
                                       "255.255.255.255"sv)));
 
-TEST(IPv4ComparisonTest, ShouldBeEqualWhenOctetsAreSame)
+TEST(IPv4Test, ShouldBeEqualWhenOctetsAreSame)
 {
     // Arrange
     IPv4 ip1(192, 168, 1, 1);
@@ -46,7 +47,7 @@ TEST(IPv4ComparisonTest, ShouldBeEqualWhenOctetsAreSame)
     EXPECT_TRUE(ip1 == ip2);
 }
 
-TEST(IPv4ComparisonTest, ShouldNotBeEqualWhenOctetsAreDifferent)
+TEST(IPv4Test, ShouldNotBeEqualWhenOctetsAreDifferent)
 {
     // Arrange
     IPv4 ip1(192, 168, 1, 1);
@@ -56,7 +57,7 @@ TEST(IPv4ComparisonTest, ShouldNotBeEqualWhenOctetsAreDifferent)
     EXPECT_TRUE(ip1 != ip2);
 }
 
-TEST(IPv4ComparisonTest, ShouldBeLessWhenFirstOctetIsLess)
+TEST(IPv4Test, ShouldBeLessWhenFirstOctetIsLess)
 {
     // Arrange
     IPv4 ip1(192, 168, 1, 1);
@@ -66,7 +67,7 @@ TEST(IPv4ComparisonTest, ShouldBeLessWhenFirstOctetIsLess)
     EXPECT_TRUE(ip1 < ip2);
 }
 
-TEST(IPv4ComparisonTest, ShouldNotBeLessWhenFirstOctetIsGreater)
+TEST(IPv4Test, ShouldNotBeLessWhenFirstOctetIsGreater)
 {
     // Arrange
     IPv4 ip1(193, 168, 1, 1);
@@ -76,7 +77,7 @@ TEST(IPv4ComparisonTest, ShouldNotBeLessWhenFirstOctetIsGreater)
     EXPECT_FALSE(ip1 < ip2);
 }
 
-TEST(IPv4ComparisonTest, ShouldBeGreaterWhenFirstOctetIsGreater)
+TEST(IPv4Test, ShouldBeGreaterWhenFirstOctetIsGreater)
 {
     // Arrange
     IPv4 ip1(193, 168, 1, 1);
@@ -86,7 +87,7 @@ TEST(IPv4ComparisonTest, ShouldBeGreaterWhenFirstOctetIsGreater)
     EXPECT_TRUE(ip1 > ip2);
 }
 
-TEST(IPv4ComparisonTest, ShouldNotBeGreaterWhenFirstOctetIsLess)
+TEST(IPv4Test, ShouldNotBeGreaterWhenFirstOctetIsLess)
 {
     // Arrange
     IPv4 ip1(192, 168, 1, 1);
@@ -96,7 +97,7 @@ TEST(IPv4ComparisonTest, ShouldNotBeGreaterWhenFirstOctetIsLess)
     EXPECT_FALSE(ip1 > ip2);
 }
 
-TEST(IPv4ComparisonTest, ShouldBeLessOrEqualWhenFirstOctetIsLess)
+TEST(IPv4Test, ShouldBeLessOrEqualWhenFirstOctetIsLess)
 {
     // Arrange
     IPv4 ip1(192, 168, 1, 1);
@@ -106,7 +107,7 @@ TEST(IPv4ComparisonTest, ShouldBeLessOrEqualWhenFirstOctetIsLess)
     EXPECT_TRUE(ip1 <= ip2);
 }
 
-TEST(IPv4ComparisonTest, ShouldBeLessOrEqualWhenOctetsAreSame)
+TEST(IPv4Test, ShouldBeLessOrEqualWhenOctetsAreSame)
 {
     // Arrange
     IPv4 ip1(192, 168, 1, 1);
@@ -116,7 +117,7 @@ TEST(IPv4ComparisonTest, ShouldBeLessOrEqualWhenOctetsAreSame)
     EXPECT_TRUE(ip1 <= ip2);
 }
 
-TEST(IPv4ComparisonTest, ShouldNotBeLessOrEqualWhenFirstOctetIsGreater)
+TEST(IPv4Test, ShouldNotBeLessOrEqualWhenFirstOctetIsGreater)
 {
     // Arrange
     IPv4 ip1(193, 168, 1, 1);
@@ -126,7 +127,7 @@ TEST(IPv4ComparisonTest, ShouldNotBeLessOrEqualWhenFirstOctetIsGreater)
     EXPECT_FALSE(ip1 <= ip2);
 }
 
-TEST(IPv4ComparisonTest, ShouldBeGreaterOrEqualWhenFirstOctetIsGreater)
+TEST(IPv4Test, ShouldBeGreaterOrEqualWhenFirstOctetIsGreater)
 {
     // Arrange
     IPv4 ip1(193, 168, 1, 1);
@@ -136,7 +137,7 @@ TEST(IPv4ComparisonTest, ShouldBeGreaterOrEqualWhenFirstOctetIsGreater)
     EXPECT_TRUE(ip1 >= ip2);
 }
 
-TEST(IPv4ComparisonTest, ShouldBeGreaterOrEqualWhenOctetsAreSame)
+TEST(IPv4Test, ShouldBeGreaterOrEqualWhenOctetsAreSame)
 {
     IPv4 ip1(192, 168, 1, 1);
     IPv4 ip2(192, 168, 1, 1);
@@ -144,7 +145,7 @@ TEST(IPv4ComparisonTest, ShouldBeGreaterOrEqualWhenOctetsAreSame)
     EXPECT_TRUE(ip1 >= ip2);
 }
 
-TEST(IPv4ComparisonTest, ShouldNotBeGreaterOrEqualWhenFirstOctetIsLess)
+TEST(IPv4Test, ShouldNotBeGreaterOrEqualWhenFirstOctetIsLess)
 {
     // Arrange
     IPv4 ip1(192, 168, 1, 1);
@@ -241,5 +242,89 @@ INSTANTIATE_TEST_SUITE_P(
     ::testing::Values(std::make_tuple(IPv4(0, 0, 0, 0), "0.0.0.0"sv),
                       std::make_tuple(IPv4(255, 255, 255, 255),
                                       "255.255.255.255"sv)));
+
+TEST(IPv4Test, ShouldReturnTrueWhenAllOctetsMatch)
+{
+    // Arrange
+    IPv4 ip(192, 168, 1, 1);
+
+    // Act
+    const auto result = ip.Matches({192, 168, 1, 1});
+
+    // Assert
+    EXPECT_TRUE(result);
+}
+
+TEST(IPv4Test, ShouldReturnTrueWhenOnlyFirstOctetMatches)
+{
+    // Arrange
+    IPv4 ip(192, 168, 1, 1);
+
+    // Act
+    const auto result = ip.Matches({192});
+
+    // Assert
+    EXPECT_TRUE(result);
+}
+
+TEST(IPv4Test, ShouldReturnFalseWhenFirstOctetDoesNotMatch)
+{
+    // Arrange
+    IPv4 ip(192, 168, 1, 1);
+
+    // Act
+    const auto result = ip.Matches({10});
+
+    // Assert
+    EXPECT_FALSE(result);
+}
+
+TEST(IPv4Test, ShouldReturnTrueWhenAllOptionalOctetsAreNullopt)
+{
+    // Arrange
+    IPv4 ip(192, 168, 1, 1);
+
+    // Act
+    const auto result = ip.Matches({});
+
+    // Assert
+    EXPECT_TRUE(result);
+}
+
+TEST(IPv4Test, ShouldReturnFalseWhenSecondOctetDoesNotMatch)
+{
+    // Arrange
+    IPv4 ip(192, 168, 1, 1);
+
+    // Act
+    const auto result = ip.Matches({192, 10});
+
+    // Assert
+    EXPECT_FALSE(result);
+}
+
+TEST(IPv4Test, ShouldReturnTrueWhenThirdAndFourthOctetsMatch)
+{
+    // Arrange
+    IPv4 ip(192, 168, 1, 1);
+
+    // Act
+    const auto result = ip.Matches({std::nullopt, {}, 1, 1});
+
+    // Assert
+    EXPECT_TRUE(result);
+}
+
+TEST(IPv4Test, ShouldReturnFalseWhenFourthOctetDoesNotMatch)
+{
+    // Arrange
+    IPv4 ip(192, 168, 1, 1);
+
+    // Act
+    const auto result = ip.Matches({std::nullopt, {}, {}, 2});
+
+    // Assert
+    EXPECT_FALSE(result);
+}
 
 }  // namespace

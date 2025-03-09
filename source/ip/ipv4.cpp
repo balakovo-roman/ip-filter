@@ -1,5 +1,6 @@
 #include "ipv4.hpp"
 
+#include <algorithm>
 #include <cctype>
 #include <limits>
 #include <sstream>
@@ -47,6 +48,27 @@ IPv4::operator std::string() const
         << '.' << static_cast<int>(octets_[2]) << '.'
         << static_cast<int>(octets_[3]);
     return oss.str();
+}
+
+bool IPv4::Matches(
+    const std::array<std::optional<uint8_t>, 4>& mask) const noexcept
+{
+    for (size_t i = 0; i < 4; ++i)
+    {
+        if (mask[i].has_value() && octets_[i] != mask[i].value())
+        {
+            return false;
+        }
+    }
+    
+    return true;
+}
+
+bool IPv4::ContainsOctet(uint8_t octet_value) const noexcept
+{
+    return std::any_of(octets_.cbegin(), octets_.cend(),
+                       [octet_value](uint8_t octet) noexcept
+                       { return octet == octet_value; });
 }
 
 }  // namespace ip

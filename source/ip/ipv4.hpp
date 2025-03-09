@@ -3,6 +3,7 @@
 #include <array>
 #include <cstdint>
 #include <istream>
+#include <optional>
 #include <ostream>
 
 namespace ip
@@ -22,6 +23,11 @@ class IPv4 final
     bool operator>(const IPv4& other) const noexcept;
     bool operator<=(const IPv4& other) const noexcept;
     bool operator>=(const IPv4& other) const noexcept;
+
+    bool Matches(
+        const std::array<std::optional<uint8_t>, 4>& mask) const noexcept;
+
+    bool ContainsOctet(uint8_t octet_value) const noexcept;
 
    private:
     std::array<uint8_t, 4> octets_;
