@@ -1,5 +1,6 @@
 #include "ipv4.hpp"
 
+#include <cctype>
 #include <limits>
 #include <sstream>
 
@@ -78,11 +79,17 @@ std::istream& operator>>(std::istream& is, ip::IPv4& ip)
                 is.setstate(std::ios_base::failbit);
                 return is;
             }
+
             is.ignore(1);
+
+            if (const auto next_char = is.peek(); !std::isdigit(next_char))
+            {
+                is.setstate(std::ios_base::failbit);
+                return is;
+            }
         }
     }
 
     ip = ip::IPv4(octets[0], octets[1], octets[2], octets[3]);
-
     return is;
 }

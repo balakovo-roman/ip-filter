@@ -184,6 +184,8 @@ INSTANTIATE_TEST_SUITE_P(
         std::make_tuple("Missing dots"sv, "192.16811"s),
         std::make_tuple("Dots in wrong places"sv, "192.168.1."s),
         std::make_tuple("Non-numeric characters"sv, "192.168.a.1"s),
+        std::make_tuple("Missing last octet"sv, "192.168."s),
+        std::make_tuple("Missing first octet"sv, ".168.1.1"s),
         std::make_tuple("Extra spaces"sv, "192 .168.1.1"s)));
 
 class IPv4InputOperatorSuccessTest
