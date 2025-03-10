@@ -60,7 +60,7 @@ bool IPv4::Matches(
             return false;
         }
     }
-    
+
     return true;
 }
 

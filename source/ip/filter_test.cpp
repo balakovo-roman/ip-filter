@@ -8,8 +8,8 @@
 namespace
 {
 
-using ip::IPv4;
 using ip::IpList;
+using ip::IPv4;
 
 class FilterTest : public ::testing::Test
 {
@@ -74,8 +74,7 @@ TEST_F(FilterTest, ShouldReturnFilteredIpsWhenSecondOctetIsFiltered)
     EXPECT_THAT(result, ::testing::ElementsAre(IPv4(182, 16, 0, 1)));
 }
 
-TEST_F(FilterTest,
-       ShouldReturnFilteredIpsWhenThirdAndFourthOctetsAreFiltered)
+TEST_F(FilterTest, ShouldReturnFilteredIpsWhenThirdAndFourthOctetsAreFiltered)
 {
     // Arrange
     SetUpFilter({IPv4(192, 168, 1, 1), IPv4(10, 0, 0, 1), IPv4(182, 16, 0, 1)});
