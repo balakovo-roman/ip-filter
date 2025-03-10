@@ -22,4 +22,6 @@ class Printer final
     std::ostream& os_;
 };
 
+void SortReverseLexicographical(std::vector<IPv4>& ip_list);
+
 }  // namespace ip

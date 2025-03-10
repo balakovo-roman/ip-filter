@@ -1,5 +1,6 @@
 #include "utils.hpp"
 
+#include <algorithm>
 #include <limits>
 
 namespace ip
@@ -36,6 +37,11 @@ void Printer::Print(const std::vector<IPv4>& ip_list)
     {
         os_ << ip << std::endl;
     }
+}
+
+void SortReverseLexicographical(std::vector<IPv4>& ip_list)
+{
+    std::sort(ip_list.begin(), ip_list.end(), std::greater<IPv4>());
 }
 
 }  // namespace ip

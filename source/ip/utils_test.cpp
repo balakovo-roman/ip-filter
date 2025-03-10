@@ -10,6 +10,7 @@ namespace
 
 using ip::IPv4;
 using ip::ReadFirstIpFromLines;
+using ip::SortReverseLexicographical;
 
 TEST(ReadFirstWordFromLinesTest, ShouldReadFirstWordFromLinesWithNewlines)
 {
@@ -121,6 +122,49 @@ TEST_F(PrinterTest, ShouldPrintNothingWhenListIsEmpty)
 
     // Assert
     EXPECT_TRUE(oss.str().empty());
+}
+
+MATCHER_P(IsSorted, comparator, "")
+{
+    return std::is_sorted(arg.begin(), arg.end(), comparator);
+}
+
+TEST(SortingTest, ShouldSortIpsInReverseLexicographicalOrder)
+{
+    // Arrange
+    std::vector<ip::IPv4> ips = {ip::IPv4(192, 168, 1, 1),
+                                 ip::IPv4(10, 0, 0, 1), ip::IPv4(172, 16, 0, 1),
+                                 ip::IPv4(192, 168, 1, 2)};
+
+    // Act
+    SortReverseLexicographical(ips);
+
+    // Assert
+    EXPECT_THAT(ips, IsSorted(std::greater<ip::IPv4>()));
+}
+
+TEST(SortingTest, ShouldSortSingleIpWhenListContainsOneIp)
+{
+    // Arrange
+    std::vector<ip::IPv4> ips = {ip::IPv4(192, 168, 1, 1)};
+
+    // Act
+    SortReverseLexicographical(ips);
+
+    // Assert
+    EXPECT_THAT(ips, IsSorted(std::greater<ip::IPv4>()));
+}
+
+TEST(SortingTest, ShouldSortEmptyListWhenListIsEmpty)
+{
+    // Arrange
+    std::vector<ip::IPv4> ips;
+
+    // Act
+    SortReverseLexicographical(ips);
+
+    // Assert
+    EXPECT_THAT(ips, IsSorted(std::greater<ip::IPv4>()));
 }
 
 }  // namespace
