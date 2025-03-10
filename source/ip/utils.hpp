@@ -9,7 +9,16 @@
 namespace ip
 {
 
-std::vector<IPv4> ReadFirstIpFromLines(std::istream& input);
+class Reader final
+{
+   public:
+    explicit Reader(std::istream& is);
+
+    std::vector<IPv4> ReadFirstIpFromLines();
+
+   private:
+    std::istream& input_;
+};
 
 class Printer final
 {
@@ -19,7 +28,7 @@ class Printer final
     void Print(const std::vector<IPv4>& ip_list);
 
    private:
-    std::ostream& os_;
+    std::ostream& output_;
 };
 
 void SortReverseLexicographical(std::vector<IPv4>& ip_list);

@@ -9,20 +9,30 @@ namespace
 {
 
 using ip::IPv4;
-using ip::ReadFirstIpFromLines;
 using ip::SortReverseLexicographical;
 
-TEST(ReadFirstWordFromLinesTest, ShouldReadFirstWordFromLinesWithNewlines)
+class ReaderTest : public ::testing::Test
+{
+   protected:
+    void SetUpInput(std::string_view input) { input_ << input; }
+
+    auto Read() { return reader_.ReadFirstIpFromLines(); }
+
+    std::stringstream input_;
+    ip::Reader reader_{input_};
+};
+
+TEST_F(ReaderTest, ShouldReadFirstWordFromLinesWithNewlines)
 {
     // Arrange
-    std::istringstream input(R"(
+    SetUpInput(R"(
         192.168.1.1
         10.0.0.1
         255.255.255.255
     )");
 
     // Act
-    const auto result = ReadFirstIpFromLines(input);
+    const auto result = Read();
 
     // Assert
     EXPECT_THAT(result,
@@ -30,17 +40,17 @@ TEST(ReadFirstWordFromLinesTest, ShouldReadFirstWordFromLinesWithNewlines)
                                        IPv4(255, 255, 255, 255)));
 }
 
-TEST(ReadFirstWordFromLinesTest, ShouldReadFirstWordFromLinesWithExtraData)
+TEST_F(ReaderTest, ShouldReadFirstWordFromLinesWithExtraData)
 {
     // Arrange
-    std::istringstream input(R"(
+    SetUpInput(R"(
         192.168.1.1foo bar
         10.0.0.1test
         255.255.255.255
     )");
 
     // Act
-    const auto result = ReadFirstIpFromLines(input);
+    const auto result = Read();
 
     // Assert
     EXPECT_THAT(result,
@@ -48,45 +58,45 @@ TEST(ReadFirstWordFromLinesTest, ShouldReadFirstWordFromLinesWithExtraData)
                                        IPv4(255, 255, 255, 255)));
 }
 
-TEST(ReadFirstWordFromLinesTest, ShouldSkipInvalidLines)
+TEST_F(ReaderTest, ShouldSkipInvalidLines)
 {
     // Arrange
-    std::istringstream input(R"(
+    SetUpInput(R"(
         1.2.3.
         10.20.30.40
         256.256.256.256
     )");
 
     // Act
-    const auto result = ReadFirstIpFromLines(input);
+    const auto result = Read();
 
     // Assert
     EXPECT_THAT(result, ::testing::ElementsAre(IPv4(10, 20, 30, 40)));
 }
 
-TEST(ReadFirstWordFromLinesTest, ShouldHandleEmptyInput)
+TEST_F(ReaderTest, ShouldHandleEmptyInput)
 {
     // Arrange
-    std::istringstream input("");
+    SetUpInput({});
 
     // Act
-    const auto result = ReadFirstIpFromLines(input);
+    const auto result = Read();
 
     // Assert
     EXPECT_THAT(result, ::testing::IsEmpty());
 }
 
-TEST(ReadFirstWordFromLinesTest, ShouldReadFirstWordFromLinesWithTabs)
+TEST_F(ReaderTest, ShouldReadFirstWordFromLinesWithTabs)
 {
     // Arrange
-    std::istringstream input(R"(
+    SetUpInput(R"(
         192.168.1.1 text   text
         10.0.0.1	text    text
         255.255.255.255	text	text
     )");
 
     // Act
-    const auto result = ReadFirstIpFromLines(input);
+    const auto result = Read();
 
     // Assert
     EXPECT_THAT(result,
