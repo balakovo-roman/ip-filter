@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.28)
 
-set(IP_LIB ip)
+set(IP_LIB ip_lib)
 
 add_library(${IP_LIB} STATIC
     filter.cpp
