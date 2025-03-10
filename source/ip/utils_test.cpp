@@ -5,9 +5,12 @@
 
 #include <sstream>
 
+#include "ipv4.hpp"
+
 namespace
 {
 
+using ip::IpList;
 using ip::IPv4;
 using ip::SortReverseLexicographical;
 
@@ -107,7 +110,7 @@ TEST_F(ReaderTest, ShouldReadFirstWordFromLinesWithTabs)
 class PrinterTest : public ::testing::Test
 {
    protected:
-    void Print(const std::vector<IPv4>& ip_list) { printer.Print(ip_list); }
+    void Print(const IpList& ip_list) { printer.Print(ip_list); }
 
     std::ostringstream oss;
     ip::Printer printer{oss};
@@ -142,9 +145,8 @@ MATCHER_P(IsSorted, comparator, "")
 TEST(SortingTest, ShouldSortIpsInReverseLexicographicalOrder)
 {
     // Arrange
-    std::vector<ip::IPv4> ips = {ip::IPv4(192, 168, 1, 1),
-                                 ip::IPv4(10, 0, 0, 1), ip::IPv4(172, 16, 0, 1),
-                                 ip::IPv4(192, 168, 1, 2)};
+    IpList ips = {ip::IPv4(192, 168, 1, 1), ip::IPv4(10, 0, 0, 1),
+                  ip::IPv4(172, 16, 0, 1), ip::IPv4(192, 168, 1, 2)};
 
     // Act
     SortReverseLexicographical(ips);
@@ -156,7 +158,7 @@ TEST(SortingTest, ShouldSortIpsInReverseLexicographicalOrder)
 TEST(SortingTest, ShouldSortSingleIpWhenListContainsOneIp)
 {
     // Arrange
-    std::vector<ip::IPv4> ips = {ip::IPv4(192, 168, 1, 1)};
+    IpList ips = {ip::IPv4(192, 168, 1, 1)};
 
     // Act
     SortReverseLexicographical(ips);
@@ -168,7 +170,7 @@ TEST(SortingTest, ShouldSortSingleIpWhenListContainsOneIp)
 TEST(SortingTest, ShouldSortEmptyListWhenListIsEmpty)
 {
     // Arrange
-    std::vector<ip::IPv4> ips;
+    IpList ips;
 
     // Act
     SortReverseLexicographical(ips);

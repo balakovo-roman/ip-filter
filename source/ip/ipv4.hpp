@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <istream>
 #include <optional>
-#include <ostream>
+#include <vector>
 
 namespace ip
 {
@@ -32,6 +32,8 @@ class IPv4 final
    private:
     std::array<uint8_t, 4> octets_;
 };
+
+using IpList = std::vector<IPv4>;
 
 }  // namespace ip
 

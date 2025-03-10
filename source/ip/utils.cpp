@@ -8,9 +8,9 @@ namespace ip
 
 Reader::Reader(std::istream& is) : input_{is} {}
 
-std::vector<IPv4> Reader::ReadFirstIpFromLines()
+IpList Reader::ReadFirstIpFromLines()
 {
-    std::vector<IPv4> ip_addresses;
+    IpList ip_addresses;
 
     while (!input_.eof())
     {
@@ -33,7 +33,7 @@ std::vector<IPv4> Reader::ReadFirstIpFromLines()
 
 Printer::Printer(std::ostream& os) : output_{os} {}
 
-void Printer::Print(const std::vector<IPv4>& ip_list)
+void Printer::Print(const IpList& ip_list)
 {
     for (const auto& ip : ip_list)
     {
@@ -41,7 +41,7 @@ void Printer::Print(const std::vector<IPv4>& ip_list)
     }
 }
 
-void SortReverseLexicographical(std::vector<IPv4>& ip_list)
+void SortReverseLexicographical(IpList& ip_list)
 {
     std::sort(ip_list.begin(), ip_list.end(), std::greater<IPv4>());
 }

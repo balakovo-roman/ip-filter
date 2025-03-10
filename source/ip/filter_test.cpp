@@ -8,20 +8,20 @@
 namespace
 {
 
-using ip::Filter;
 using ip::IPv4;
+using ip::IpList;
 
 class FilterTest : public ::testing::Test
 {
    protected:
-    void SetUpFilter(std::vector<IPv4>&& list_of_ip)
+    void SetUpFilter(IpList&& list_of_ip)
     {
         ips = std::move(list_of_ip);
-        filter = std::make_unique<Filter>(ips);
+        filter = std::make_unique<ip::Filter>(ips);
     }
 
-    std::vector<IPv4> ips;
-    std::unique_ptr<Filter> filter;
+    IpList ips;
+    std::unique_ptr<ip::Filter> filter;
 };
 
 TEST_F(FilterTest, ShouldReturnAllIpsWhenNoFilterIsApplied)
