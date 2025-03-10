@@ -28,4 +28,14 @@ std::vector<IPv4> ReadFirstIpFromLines(std::istream& input)
     return ip_addresses;
 }
 
+Printer::Printer(std::ostream& os) : os_{os} {}
+
+void Printer::Print(const std::vector<IPv4>& ip_list)
+{
+    for (const auto& ip : ip_list)
+    {
+        os_ << ip << std::endl;
+    }
+}
+
 }  // namespace ip

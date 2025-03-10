@@ -93,4 +93,34 @@ TEST(ReadFirstWordFromLinesTest, ShouldReadFirstWordFromLinesWithTabs)
                                        IPv4(255, 255, 255, 255)));
 }
 
+class PrinterTest : public ::testing::Test
+{
+   protected:
+    void Print(const std::vector<IPv4>& ip_list) { printer.Print(ip_list); }
+
+    std::ostringstream oss;
+    ip::Printer printer{oss};
+};
+
+TEST_F(PrinterTest, ShouldPrintIpListWhenListIsNotEmpty)
+{
+    // Act
+    Print({IPv4(192, 168, 1, 1), IPv4(10, 0, 0, 1), IPv4(192, 16, 0, 1)});
+
+    // Assert
+    EXPECT_EQ(oss.str(),
+              "192.168.1.1\n"
+              "10.0.0.1\n"
+              "192.16.0.1\n");
+}
+
+TEST_F(PrinterTest, ShouldPrintNothingWhenListIsEmpty)
+{
+    // Act
+    Print({});
+
+    // Assert
+    EXPECT_TRUE(oss.str().empty());
+}
+
 }  // namespace
