@@ -10,6 +10,8 @@
 namespace
 {
 
+using namespace std::string_view_literals;
+
 using ip::IpList;
 using ip::IPv4;
 using ip::SortReverseLexicographical;
@@ -28,11 +30,10 @@ class ReaderTest : public ::testing::Test
 TEST_F(ReaderTest, ShouldReadFirstWordFromLinesWithNewlines)
 {
     // Arrange
-    SetUpInput(R"(
-        192.168.1.1
-        10.0.0.1
-        255.255.255.255
-    )");
+    SetUpInput(R"(192.168.1.1
+10.0.0.1
+255.255.255.255
+    )"sv);
 
     // Act
     const auto result = Read();
@@ -46,11 +47,10 @@ TEST_F(ReaderTest, ShouldReadFirstWordFromLinesWithNewlines)
 TEST_F(ReaderTest, ShouldReadFirstWordFromLinesWithExtraData)
 {
     // Arrange
-    SetUpInput(R"(
-        192.168.1.1foo bar
-        10.0.0.1test
-        255.255.255.255
-    )");
+    SetUpInput(R"(192.168.1.1foo bar
+10.0.0.1test
+255.255.255.255
+    )"sv);
 
     // Act
     const auto result = Read();
@@ -64,11 +64,10 @@ TEST_F(ReaderTest, ShouldReadFirstWordFromLinesWithExtraData)
 TEST_F(ReaderTest, ShouldSkipInvalidLines)
 {
     // Arrange
-    SetUpInput(R"(
-        1.2.3.
-        10.20.30.40
-        256.256.256.256
-    )");
+    SetUpInput(R"(1.2.3.
+10.20.30.40
+256.256.256.256
+    )"sv);
 
     // Act
     const auto result = Read();
@@ -92,11 +91,10 @@ TEST_F(ReaderTest, ShouldHandleEmptyInput)
 TEST_F(ReaderTest, ShouldReadFirstWordFromLinesWithTabs)
 {
     // Arrange
-    SetUpInput(R"(
-        192.168.1.1 text   text
-        10.0.0.1	text    text
-        255.255.255.255	text	text
-    )");
+    SetUpInput(R"(192.168.1.1 text   text
+10.0.0.1	text    text
+255.255.255.255	text	text
+    )"sv);
 
     // Act
     const auto result = Read();
@@ -123,9 +121,10 @@ TEST_F(PrinterTest, ShouldPrintIpListWhenListIsNotEmpty)
 
     // Assert
     EXPECT_EQ(oss.str(),
-              "192.168.1.1\n"
-              "10.0.0.1\n"
-              "192.16.0.1\n");
+              R"(192.168.1.1
+10.0.0.1
+192.16.0.1
+)"sv);
 }
 
 TEST_F(PrinterTest, ShouldPrintNothingWhenListIsEmpty)

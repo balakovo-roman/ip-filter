@@ -113,5 +113,6 @@ std::istream& operator>>(std::istream& is, ip::IPv4& ip)
     }
 
     ip = ip::IPv4(octets[0], octets[1], octets[2], octets[3]);
+
     return is;
 }

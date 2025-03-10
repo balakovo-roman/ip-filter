@@ -14,17 +14,15 @@ IpList Reader::ReadFirstIpFromLines()
 
     while (!input_.eof())
     {
-        IPv4 ip;
-        input_ >> ip;
-
-        if (input_.fail())
+        if (IPv4 ip; !(input_ >> ip))
         {
             input_.clear();
-            input_.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            continue;
+        }
+        else
+        {
+            ip_addresses.emplace_back(ip);
         }
 
-        ip_addresses.emplace_back(ip);
         input_.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
 
